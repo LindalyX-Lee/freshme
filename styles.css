@@ -58,6 +58,7 @@ body {
 
 .cover {
   object-fit: cover;
+  object-position: center center;
   z-index: 2;
 }
 
@@ -86,15 +87,33 @@ body {
 
 h1 {
   margin: 0;
-  font-family: Georgia, "Songti SC", "STSong", serif;
+  font-family: "STSong", "Songti SC", "Noto Serif CJK SC", Georgia, serif;
   font-size: clamp(58px, 8vw, 108px);
   line-height: 0.94;
+  letter-spacing: 0;
+}
+
+.brand-lockup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.brand-cn {
+  margin: 0;
+  color: var(--accent);
+  font-family: "Hannotate SC", "Xingkai SC", "Kaiti SC", "STKaiti", "Songti SC", serif;
+  font-size: clamp(25px, 3.8vw, 40px);
+  font-weight: 700;
   letter-spacing: 0;
 }
 
 .subtitle {
   margin: 0;
   color: var(--muted);
+  min-height: 64px;
+  max-width: 430px;
+  font-family: "Kaiti SC", "STKaiti", "Songti SC", serif;
   font-size: 22px;
   line-height: 1.45;
 }
@@ -193,6 +212,11 @@ ol {
   align-items: center;
   min-height: 78px;
   border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+
+.track:hover .track-title {
+  color: var(--accent);
 }
 
 .track-index {
@@ -237,8 +261,12 @@ ol {
 
   .cover-wrap {
     min-height: auto;
-    aspect-ratio: 4 / 3;
-    max-height: 42vh;
+    aspect-ratio: 1 / 1;
+    max-height: 40vh;
+  }
+
+  .cover {
+    object-position: center 32%;
   }
 
   h1 {
@@ -246,6 +274,7 @@ ol {
   }
 
   .subtitle {
+    min-height: 52px;
     font-size: 18px;
   }
 

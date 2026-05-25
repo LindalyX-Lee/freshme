@@ -9,6 +9,10 @@ Open the page, tap **Start**, and it plays a daily flow:
 
 The main section targets 50-90 minutes and avoids repeating the same main playlist across the recent local history window.
 
+## Boundaries
+
+YouTube ads are controlled by YouTube. FreshMe does not include ad-blocking code or any private YouTube credentials.
+
 ## Privacy
 
 This public build contains no private keys, no YouTube API credentials, and no account tokens. It uses public YouTube video IDs through the YouTube iframe player and static metadata generated ahead of time.

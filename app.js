@@ -2,6 +2,23 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const MAIN_MIN_SECONDS = 50 * 60;
 const MAIN_MAX_SECONDS = 90 * 60;
 const HISTORY_DAYS = 7;
+const DAILY_MANTRAS = [
+  "清晨先省心，身心自有新生。",
+  "虚其心，实其腹，今日从一息开始。",
+  "不急不争，先把自己放回身体里。",
+  "一念清明，万事从容。",
+  "守静笃，复归于朴。",
+  "晨光入眼，气息归根。",
+  "先正其身，再行其事。",
+  "少一点用力，多一点觉知。",
+  "今日不求满，只求真。",
+  "把心收回来，路自然展开。",
+  "三省吾身，一省即新。",
+  "神清则气定，气定则身安。",
+  "以柔胜躁，以静养明。",
+  "晨起一念新，旧我少一分。",
+  "不向外追，先向内明。"
+];
 
 const tracks = window.FRESHME_TRACKS;
 const state = {
@@ -117,8 +134,9 @@ function buildMain(date = dateKey()) {
 
 function buildPlaylist(date = dateKey()) {
   const opening = tracks.opening.find((track) => track.fetchStatus === "ok");
+  const openingRepeat = opening ? { ...opening, repeatLabel: "repeat" } : null;
   const main = buildMain(date);
-  const playlist = [opening, ...main].filter(Boolean);
+  const playlist = [opening, openingRepeat, ...main].filter(Boolean);
   saveHistory(date, signatureFor(main));
   return playlist;
 }
@@ -138,6 +156,7 @@ function renderPlaylist() {
     month: "long",
     day: "numeric"
   }).format(new Date());
+  document.querySelector("#daily-mantra").textContent = DAILY_MANTRAS[dayNumber(dateKey()) % DAILY_MANTRAS.length];
   els.totalTime.textContent = formatDuration(total);
   els.trackCount.textContent = String(state.playlist.length);
   els.cover.src = `./assets/cover-${dateKey()}.png`;
@@ -159,10 +178,17 @@ function renderPlaylist() {
       <div class="track-index">${String(index + 1).padStart(2, "0")}</div>
       <div>
         <p class="track-title">${track.title}</p>
-        <p class="track-note">${index === 0 ? "Part 1 · 固定开场" : "Part 2 · Main practice"}</p>
+        <p class="track-note">${index < 2 ? `Part 1 · 喜洋洋 ${index + 1}/2` : "Part 2 · Main practice"}</p>
       </div>
       <div class="track-time">${formatDuration(track.playableSeconds)}</div>
     `;
+    item.addEventListener("click", () => {
+      if (!state.ready) {
+        els.status.textContent = "Loading YouTube...";
+        return;
+      }
+      playTrack(index);
+    });
     els.list.appendChild(item);
   });
 }
