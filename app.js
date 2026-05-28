@@ -21,6 +21,7 @@ const DAILY_MANTRAS = [
 ];
 
 const tracks = window.FRESHME_TRACKS;
+const covers = window.FRESHME_COVERS || [];
 const state = {
   playlist: [],
   player: null,
@@ -37,6 +38,15 @@ const els = {
   status: document.querySelector("#flow-status"),
   list: document.querySelector("#playlist-list")
 };
+
+function trackTheme(track) {
+  const text = `${track?.title || ""} ${track?.note || ""}`.toLowerCase();
+  if (text.includes("heart sutra") || text.includes("心经") || text.includes("金刚经") || text.includes("清静经") || text.includes("清靜經") || text.includes("sutra")) return "sutra";
+  if (text.includes("道") || text.includes("清淨") || text.includes("tranquility")) return "dao";
+  if (text.includes("guqin") || text.includes("古琴") || text.includes("琴")) return "guqin";
+  if (text.includes("喜洋洋") || text.includes("喜气") || text.includes("喜氣")) return "joy";
+  return "tea";
+}
 
 function dateKey(date = new Date()) {
   const year = date.getFullYear();
@@ -97,6 +107,24 @@ function saveHistory(key, signature) {
   localStorage.setItem("freshme-history", JSON.stringify(history));
 }
 
+function getCoverHistory() {
+  try {
+    return JSON.parse(localStorage.getItem("freshme-cover-history") || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveCoverHistory(key, coverId) {
+  const history = getCoverHistory();
+  history[key] = coverId;
+  const keepAfter = dayNumber(key) - HISTORY_DAYS;
+  for (const oldKey of Object.keys(history)) {
+    if (dayNumber(oldKey) < keepAfter) delete history[oldKey];
+  }
+  localStorage.setItem("freshme-cover-history", JSON.stringify(history));
+}
+
 function signatureFor(list) {
   return list.map((track) => `${track.videoId}:${track.startAtSeconds || 0}`).join("|");
 }
@@ -141,6 +169,26 @@ function buildPlaylist(date = dateKey()) {
   return playlist;
 }
 
+function selectCover(date, playlist) {
+  const mainTheme = trackTheme(playlist.find((track, index) => index >= 2) || playlist[0]);
+  const history = getCoverHistory();
+  const recentIds = new Set(
+    Object.entries(history)
+      .filter(([key]) => key !== date)
+      .map(([, coverId]) => coverId)
+  );
+  const themed = covers.filter((cover) => cover.theme === mainTheme);
+  const pool = themed.length ? themed : covers;
+  const themedAvailable = themed.filter((cover) => !recentIds.has(cover.id));
+  const allAvailable = covers.filter((cover) => !recentIds.has(cover.id));
+  const candidates = themedAvailable.length ? themedAvailable : (allAvailable.length ? allAvailable : pool);
+  if (!candidates.length) return null;
+  const random = seededRandom(hashString(`${date}:${mainTheme}:cover`));
+  const cover = candidates[Math.floor(random() * candidates.length)];
+  saveCoverHistory(date, cover.id);
+  return cover;
+}
+
 function formatDuration(seconds) {
   const minutes = Math.round(seconds / 60);
   if (minutes < 60) return `${minutes}m`;
@@ -159,7 +207,9 @@ function renderPlaylist() {
   document.querySelector("#daily-mantra").textContent = DAILY_MANTRAS[dayNumber(dateKey()) % DAILY_MANTRAS.length];
   els.totalTime.textContent = formatDuration(total);
   els.trackCount.textContent = String(state.playlist.length);
-  els.cover.src = `./assets/cover-${dateKey()}.png`;
+  const cover = selectCover(dateKey(), state.playlist);
+  els.cover.src = cover?.src || "./assets/cover-default.png";
+  els.cover.alt = cover ? `FreshMe 今日封面：${cover.title}` : "FreshMe 今日封面";
   els.cover.onerror = () => {
     if (!els.cover.dataset.fallback) {
       els.cover.dataset.fallback = "true";
