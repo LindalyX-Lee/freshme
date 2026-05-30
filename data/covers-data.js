@@ -1,92 +1,80 @@
 window.FRESHME_COVERS = [
   {
-    id: "cover-01",
-    theme: "guqin",
-    src: "./assets/covers/freshme-cover-01-guqin-courtyard.png",
-    title: "古琴庭院"
+    id: "v04-01",
+    theme: "xiao",
+    src: "./assets/covers-v04-final/freshme-cover-01-xiao-mountain.png",
+    title: "山风箫晨"
   },
   {
-    id: "cover-02",
-    theme: "guqin",
-    src: "./assets/covers/freshme-cover-02-guqin-bamboo.png",
-    title: "竹影琴晨"
+    id: "v04-02",
+    theme: "pipa",
+    src: "./assets/covers-v04-final/freshme-cover-02-pipa-red-gold.png",
+    title: "红金琵琶"
   },
   {
-    id: "cover-03",
-    theme: "dao",
-    src: "./assets/covers/freshme-cover-03-dao-pavilion.png",
-    title: "山亭清修"
+    id: "v04-03",
+    theme: "movement",
+    src: "./assets/covers-v04-final/freshme-cover-03-bamboo-taichi.png",
+    title: "竹林开身"
   },
   {
-    id: "cover-04",
-    theme: "sutra",
-    src: "./assets/covers/freshme-cover-04-sutra-tea.png",
-    title: "晨茶心省"
+    id: "v04-04",
+    theme: "sound",
+    src: "./assets/covers-v04-final/freshme-cover-04-lotus-singing-bowl.png",
+    title: "莲池钵音"
   },
   {
-    id: "cover-05",
-    theme: "guqin",
-    src: "./assets/covers/freshme-cover-05-guqin-dawn-veranda.png",
-    title: "琴廊破晓"
-  },
-  {
-    id: "cover-06",
-    theme: "dao",
-    src: "./assets/covers/freshme-cover-06-dao-flowing-sleeve.png",
-    title: "道风舒袖"
-  },
-  {
-    id: "cover-07",
-    theme: "sutra",
-    src: "./assets/covers/freshme-cover-07-sutra-golden-tea.png",
-    title: "金晨经意"
-  },
-  {
-    id: "cover-08",
-    theme: "bamboo",
-    src: "./assets/covers/freshme-cover-08-bamboo-mountain-path.png",
-    title: "竹径新息"
-  },
-  {
-    id: "cover-09",
+    id: "v04-05",
     theme: "tea",
-    src: "./assets/covers/freshme-cover-09-tea-courtyard-renewal.png",
-    title: "茶庭焕新"
+    src: "./assets/covers-v04-final/freshme-cover-05-terracotta-tea.png",
+    title: "陶院晨茶"
   },
   {
-    id: "cover-10",
-    theme: "guqin",
-    src: "./assets/covers/freshme-cover-10-guqin-sunlit-room.png",
-    title: "日照琴房"
+    id: "v04-06",
+    theme: "rain",
+    src: "./assets/covers-v04-final/freshme-cover-06-rain-umbrella-fan.png",
+    title: "雨亭轻步"
   },
   {
-    id: "cover-11",
-    theme: "guqin",
-    src: "./assets/covers/freshme-cover-11-rain-guqin-morning.png",
-    title: "雨后琴晨"
+    id: "v04-07",
+    theme: "wind",
+    src: "./assets/covers-v04-final/freshme-cover-07-coastal-kite.png",
+    title: "海风纸鸢"
   },
   {
-    id: "cover-12",
-    theme: "sutra",
-    src: "./assets/covers/freshme-cover-12-lotus-sutra-calm.png",
-    title: "莲池静省"
+    id: "v04-08",
+    theme: "ink",
+    src: "./assets/covers-v04-final/freshme-cover-08-ink-study.png",
+    title: "书房新墨"
   },
   {
-    id: "cover-13",
-    theme: "dao",
-    src: "./assets/covers/freshme-cover-13-mountain-wind-dao.png",
-    title: "山风清明"
+    id: "v04-09",
+    theme: "erhu",
+    src: "./assets/covers-v04-final/freshme-cover-09-mountain-erhu.png",
+    title: "云台二胡"
   },
   {
-    id: "cover-14",
-    theme: "dao",
-    src: "./assets/covers/freshme-cover-14-dao-temple-morning.png",
-    title: "清院晨坐"
+    id: "v04-10",
+    theme: "qigong",
+    src: "./assets/covers-v04-final/freshme-cover-10-rooftop-qigong.png",
+    title: "天台清气"
   },
   {
-    id: "cover-15",
-    theme: "joy",
-    src: "./assets/covers/freshme-cover-15-red-gold-fresh-start.png",
-    title: "喜气新晨"
+    id: "v04-11",
+    theme: "dance",
+    src: "./assets/covers-v04-final/freshme-cover-11-ribbon-dance.png",
+    title: "晨光绸舞"
+  },
+  {
+    id: "v04-12",
+    theme: "ruan",
+    src: "./assets/covers-v04-final/freshme-cover-12-riverside-ruan.png",
+    title: "桥上阮音"
+  },
+  {
+    id: "v04-13",
+    theme: "herbs",
+    src: "./assets/covers-v04-final/freshme-cover-13-herb-harvest.png",
+    title: "露草新采"
   }
 ];
