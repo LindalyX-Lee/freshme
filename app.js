@@ -2,6 +2,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const MAIN_MIN_SECONDS = 50 * 60;
 const MAIN_MAX_SECONDS = 90 * 60;
 const HISTORY_DAYS = 7;
+const OPENING_REPEAT_COUNT = 5;
 const DAILY_MANTRAS = [
   "清晨先省心，身心自有新生。",
   "虚其心，实其腹，今日从一息开始。",
@@ -162,15 +163,17 @@ function buildMain(date = dateKey()) {
 
 function buildPlaylist(date = dateKey()) {
   const opening = tracks.opening.find((track) => track.fetchStatus === "ok");
-  const openingRepeat = opening ? { ...opening, repeatLabel: "repeat" } : null;
+  const openingTracks = opening
+    ? Array.from({ length: OPENING_REPEAT_COUNT }, (_, index) => ({ ...opening, repeatLabel: index + 1 }))
+    : [];
   const main = buildMain(date);
-  const playlist = [opening, openingRepeat, ...main].filter(Boolean);
+  const playlist = [...openingTracks, ...main];
   saveHistory(date, signatureFor(main));
   return playlist;
 }
 
 function selectCover(date, playlist) {
-  const mainTheme = trackTheme(playlist.find((track, index) => index >= 2) || playlist[0]);
+  const mainTheme = trackTheme(playlist.find((track, index) => index >= OPENING_REPEAT_COUNT) || playlist[0]);
   const history = getCoverHistory();
   const recentIds = new Set(
     Object.entries(history)
@@ -228,7 +231,7 @@ function renderPlaylist() {
       <div class="track-index">${String(index + 1).padStart(2, "0")}</div>
       <div>
         <p class="track-title">${track.title}</p>
-        <p class="track-note">${index < 2 ? `Part 1 · 喜洋洋 ${index + 1}/2` : "Part 2 · Main practice"}</p>
+        <p class="track-note">${index < OPENING_REPEAT_COUNT ? `Part 1 · 喜洋洋 ${index + 1}/${OPENING_REPEAT_COUNT}` : "Part 2 · Main practice"}</p>
       </div>
       <div class="track-time">${formatDuration(track.playableSeconds)}</div>
     `;
