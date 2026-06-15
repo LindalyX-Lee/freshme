@@ -61,6 +61,7 @@ function shuffled(items, random) {
 
 function trackTheme(track) {
   const text = `${track?.title || ""} ${track?.note || ""}`.toLowerCase();
+  if (text.includes("普庵") || text.includes("咒") || text.includes("mantra")) return "sound";
   if (text.includes("heart sutra") || text.includes("心经") || text.includes("金刚经") || text.includes("清静经") || text.includes("清靜經") || text.includes("sutra")) return "sutra";
   if (text.includes("道") || text.includes("清淨") || text.includes("tranquility")) return "dao";
   if (text.includes("guqin") || text.includes("古琴") || text.includes("琴")) return "guqin";

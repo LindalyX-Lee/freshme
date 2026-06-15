@@ -11,6 +11,10 @@ The main section targets 50-90 minutes and avoids repeating the same main playli
 
 v0.3 adds a 15-image avatar cover pool. FreshMe chooses a daily cover from the current music theme when possible, keeps the same cover for the same day, and avoids repeating a cover within the recent 7-day window.
 
+v0.5 adds repeatable main tracks. `普庵咒` is stored as one 7:15 main candidate and expands to 10 consecutive plays when selected.
+
+v0.6 makes iPad playback more stable by starting the whole flow with YouTube's native playlist queue instead of loading each video one by one from app JavaScript. It also retries early unexpected pauses during the first 30 seconds after Start.
+
 ## Boundaries
 
 YouTube ads are controlled by YouTube. FreshMe does not include ad-blocking code or any private YouTube credentials.

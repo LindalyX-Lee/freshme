@@ -1,5 +1,5 @@
 window.FRESHME_TRACKS = {
-  "generatedAt": "2026-05-25T05:20:50.324Z",
+  "generatedAt": "2026-06-12T13:26:10Z",
   "opening": [
     {
       "part": "opening",
@@ -79,6 +79,21 @@ window.FRESHME_TRACKS = {
       "playableSeconds": 575,
       "webpageUrl": "https://www.youtube.com/watch?v=8w_hpwidDqM",
       "thumbnail": "https://i.ytimg.com/vi/8w_hpwidDqM/maxresdefault.jpg",
+      "fetchStatus": "ok"
+    },
+    {
+      "part": "main",
+      "note": "普庵咒，7:15，连续 10 遍",
+      "shortTitle": "普庵咒",
+      "videoId": "mADvQK108r0",
+      "title": "古琴大师吴景略先生演奏《普庵咒》",
+      "channel": "Classical Music",
+      "durationSeconds": 435,
+      "startAtSeconds": 0,
+      "playableSeconds": 435,
+      "repeatCount": 10,
+      "webpageUrl": "https://www.youtube.com/watch?v=mADvQK108r0",
+      "thumbnail": "https://i.ytimg.com/vi/mADvQK108r0/maxresdefault.jpg",
       "fetchStatus": "ok"
     },
     {
