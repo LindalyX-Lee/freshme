@@ -32,7 +32,8 @@ const state = {
   ready: false,
   nativeQueue: false,
   startedAt: 0,
-  autoResumeAttempts: 0
+  autoResumeAttempts: 0,
+  failedVideoIds: new Set()
 };
 
 const els = {
@@ -285,11 +286,31 @@ function setActive(index) {
 }
 
 function canUseNativeQueue() {
-  return state.playlist.every((track, index) => index === 0 || !track.startAtSeconds);
+  const seen = new Set();
+  return state.playlist.every((track, index) => {
+    if (index > 0 && track.startAtSeconds) return false;
+    if (candidateVideoIds(track).length > 1) return false;
+    if (seen.has(track.videoId)) return false;
+    seen.add(track.videoId);
+    return true;
+  });
 }
 
 function queueVideoIds() {
   return state.playlist.map((track) => track.videoId);
+}
+
+function candidateVideoIds(track) {
+  return [track.videoId, ...(track.fallbackVideoIds || [])].filter(Boolean);
+}
+
+function playableVideoId(track) {
+  return candidateVideoIds(track).find((videoId) => !state.failedVideoIds.has(videoId)) || null;
+}
+
+function hasSamePlaybackSource(a, b) {
+  if (!a || !b) return false;
+  return playableVideoId(a) === playableVideoId(b) && (a.startAtSeconds || 0) === (b.startAtSeconds || 0);
 }
 
 function markPlaybackStarted() {
@@ -306,6 +327,11 @@ function enableIframeAutoplay() {
 function playTrack(index) {
   const track = state.playlist[index];
   if (!track || !state.player) return;
+  const videoId = playableVideoId(track);
+  if (!videoId) {
+    skipUnavailable(index);
+    return;
+  }
   markPlaybackStarted();
   setActive(index);
   els.status.textContent = `Playing ${index + 1}/${state.playlist.length}`;
@@ -314,7 +340,7 @@ function playTrack(index) {
     return;
   }
   state.player.loadVideoById({
-    videoId: track.videoId,
+    videoId,
     startSeconds: track.startAtSeconds || 0
   });
 }
@@ -360,25 +386,60 @@ function syncNativeQueueIndex() {
 }
 
 function handlePlaybackEnded() {
-  if (state.nativeQueue) {
-    if (state.activeIndex >= state.playlist.length - 1) {
-      els.status.textContent = "Complete";
-      setActive(-1);
-    }
+  const next = state.activeIndex + 1;
+  if (next >= state.playlist.length) {
+    els.status.textContent = "Complete";
+    setActive(-1);
     return;
   }
 
-  const next = state.activeIndex + 1;
-  if (next < state.playlist.length) {
-    playTrack(next);
-  } else {
-    els.status.textContent = "Complete";
-    setActive(-1);
+  if (state.nativeQueue) {
+    return;
   }
+
+  if (hasSamePlaybackSource(state.playlist[state.activeIndex], state.playlist[next])) {
+    markPlaybackStarted();
+    setActive(next);
+    els.status.textContent = `Playing ${next + 1}/${state.playlist.length}`;
+    state.player.seekTo(state.playlist[next].startAtSeconds || 0, true);
+    state.player.playVideo();
+    return;
+  }
+
+  playTrack(next);
 }
 
 function handleAutoplayBlocked() {
   els.status.textContent = "Tap YouTube play once";
+}
+
+function skipUnavailable(index) {
+  const next = index + 1;
+  if (next < state.playlist.length) {
+    els.status.textContent = `Skipping ${index + 1}/${state.playlist.length}`;
+    playTrack(next);
+    return;
+  }
+  els.status.textContent = "Complete";
+  setActive(-1);
+}
+
+function handlePlayerError() {
+  const track = state.playlist[state.activeIndex];
+  const failedVideoId = playableVideoId(track);
+  if (failedVideoId) state.failedVideoIds.add(failedVideoId);
+  const fallbackVideoId = playableVideoId(track);
+
+  if (fallbackVideoId) {
+    els.status.textContent = "Trying backup...";
+    state.player.loadVideoById({
+      videoId: fallbackVideoId,
+      startSeconds: track.startAtSeconds || 0
+    });
+    return;
+  }
+
+  skipUnavailable(state.activeIndex);
 }
 
 window.onYouTubeIframeAPIReady = () => {
@@ -408,6 +469,7 @@ window.onYouTubeIframeAPIReady = () => {
           handlePlaybackEnded();
         }
       },
+      onError: handlePlayerError,
       onAutoplayBlocked: handleAutoplayBlocked
     }
   });

@@ -15,6 +15,8 @@ v0.5 adds repeatable main tracks. `普庵咒` is stored as one 7:15 main candida
 
 v0.6 makes iPad playback more stable by starting the whole flow with YouTube's native playlist queue instead of loading each video one by one from app JavaScript. It also retries early unexpected pauses during the first 30 seconds after Start.
 
+v0.7 fixes iPad YouTube player errors on repeated queues. FreshMe now avoids native playlist mode when the queue contains repeated video IDs or fallback sources, replays same-video repeats with `seekTo(0) + playVideo()`, and automatically tries backup `喜洋洋` sources if YouTube errors on the opening track.
+
 ## Boundaries
 
 YouTube ads are controlled by YouTube. FreshMe does not include ad-blocking code or any private YouTube credentials.

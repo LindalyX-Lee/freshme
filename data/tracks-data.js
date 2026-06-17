@@ -10,6 +10,12 @@ window.FRESHME_TRACKS = {
       "durationSeconds": 124,
       "startAtSeconds": 0,
       "playableSeconds": 124,
+      "fallbackVideoIds": [
+        "nQKRKqntbj4",
+        "HhCaoUUqWjA",
+        "kAMERpL8Zqc",
+        "SPH1n1pq7qE"
+      ],
       "webpageUrl": "https://www.youtube.com/watch?v=FGfewK2e_tU",
       "thumbnail": "https://i.ytimg.com/vi/FGfewK2e_tU/sddefault.jpg?sqp=-oaymwEmCIAFEOAD8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGH8gOygeMA8=&rs=AOn4CLATHJFg-cpeH-hr_Gr2hiPnEuAVew",
       "fetchStatus": "ok"
